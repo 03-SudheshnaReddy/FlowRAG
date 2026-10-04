@@ -51,16 +51,24 @@ faiss_db/
 local_tokenizer/
 intfloat/
 nvidia/
-models/
+/models/
 *.pt
 *.pth
 *.bin
 *.safetensors
 
+# IMPORTANT: never ignore our own src/models/ package (this is source code,
+# not downloaded model weights) — the line above is scoped to a root-level
+# ./models/ folder only, but these explicit rules make it bulletproof.
+!src/models/
+!src/models/**
+
 # ===========================
 # Project Specific - Output
 # ===========================
 output/
+output_pilot/
+output_full/
 logs/
 grid_search_evaluation/
 *.log
