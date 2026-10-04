@@ -178,7 +178,8 @@ class FlowRAGTrainer:
                 model_name=self.config.model.generator_name,
                 max_new_tokens=self.config.model.max_new_tokens,
                 use_vllm=not for_training,
-                device=self.device
+                device=self.device,
+                load_in_4bit=self.config.model.load_in_4bit
             )
         return self.generator
     

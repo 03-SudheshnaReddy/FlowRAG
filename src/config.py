@@ -53,6 +53,7 @@ class ModelConfig:
     generator_name: str = "Qwen/Qwen2.5-7B-Instruct"
     max_new_tokens: int = 64
     temperature: float = 0.1
+    load_in_4bit: bool = False
     
     @property
     def query_encoder(self) -> str:

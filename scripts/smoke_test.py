@@ -125,7 +125,7 @@ def make_embedder(retriever_name, use_prompt, prompt_config, device):
     )
 
 
-def make_generator(model_name, max_new_tokens=64, use_vllm=False, device="cpu"):
+def make_generator(model_name, max_new_tokens=64, use_vllm=False, device="cpu", load_in_4bit=False):
     config = GPT2Config(
         n_embd=32,
         n_layer=2,
@@ -144,6 +144,7 @@ def make_generator(model_name, max_new_tokens=64, use_vllm=False, device="cpu"):
         device=device,
         model=GPT2LMHeadModel(config),
         tokenizer=TinyCharTokenizer(vocab_size=100),
+        load_in_4bit=load_in_4bit,
     )
 
 

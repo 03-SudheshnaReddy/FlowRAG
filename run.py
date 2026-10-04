@@ -51,6 +51,8 @@ def parse_args():
                         help='Generator model name or path')
     parser.add_argument('--max_new_tokens', type=int, default=64,
                         help='Maximum tokens to generate')
+    parser.add_argument('--load_in_4bit', action='store_true', default=False,
+                        help='Load the generator with bitsandbytes 4-bit NF4 quantization')
     
     # Training options
     parser.add_argument('--cl_method', type=str, default='fp',
@@ -120,7 +122,8 @@ def args_to_config(args) -> FlowRAGConfig:
             retriever_name=args.retriever,
             generator_name=args.generator,
             max_new_tokens=args.max_new_tokens,
-            temperature=args.temperature
+            temperature=args.temperature,
+            load_in_4bit=args.load_in_4bit
         ),
         training=TrainingConfig(
             learning_rate=args.lr,
