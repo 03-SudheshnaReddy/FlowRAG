@@ -1,0 +1,66 @@
+# FlowRAG Online Learning Configuration (Paper Settings)
+# =====================================================
+# Paper: FlowRAG - Continual Learning for Retrieval-Augmented Generation
+#
+# Key hyperparameters from the paper:
+#   - Prompt length: 150
+#   - Prompt layers: 1-7
+#   - Learning rate: 5e-3
+#   - Warm-up ratio: 0.1
+#   - KL temperature (retrieval-likelihood): 0.1
+#   - KL temperature (aggregated-state): 1.0
+#   - Beta: 0.6
+#   - Top-K: 5 documents per query
+#   - Samples per task: 1,000 QA pairs
+
+model:
+  retriever_name: contriever
+  query_encoder: facebook/contriever
+  passage_encoder: facebook/contriever
+  embedding_dim: 768
+  
+  generator_name: Qwen/Qwen2.5-7B-Instruct
+  max_new_tokens: 64
+  temperature: 0.1          # KL temp for retrieval-likelihood alignment
+  kl_temp_state: 1.0        # KL temp for aggregated-state alignment
+
+training:
+  learning_rate: 5e-3       # Paper: 5e-3 for FlowRAG
+  warmup_ratio: 0.1         # Paper: warm-up ratio 0.1
+  batch_size: 1
+  max_steps: 5000
+  eval_interval: 500
+  samples_per_task: 1000    # Paper: 1,000 QA pairs per dataset
+  
+  # Continual learning method
+  cl_method: fp             # FusionPrompt
+  
+  # FlowRAG-specific (paper settings)
+  prompt_len: 150           # Paper: prompt length 150
+  prompt_layer: 7           # Paper: encoder layers 1-7
+  beta: 0.6                 # Paper: β = 0.6 in Eq.(10)
+  
+  # Fusion components
+  use_ilf: true             # Inner Layer Fusion
+  use_cef: true             # Cross Embedder Fusion
+  use_ggf: false            # Generator-Guided Fusion
+  cef_t: 1.0                # CEF temperature
+  ggf_t: 1.0                # GGF temperature
+
+retrieval:
+  top_k: 5                  # Paper: top-5 documents per query
+  index_type: FLAT
+  use_faiss: true
+  faiss_db_path: ./faiss_db
+
+data:
+  datasets:
+    - nq
+    - covidqa
+    - convqa
+    - newnewsqa
+  data_dir: ./cl_datasets
+  output_dir: ./output/flowrag
+
+gpu: 0
+seed: 42

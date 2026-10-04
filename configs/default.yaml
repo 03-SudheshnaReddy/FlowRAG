@@ -1,0 +1,54 @@
+# FlowRAG Default Configuration
+# ==============================
+
+# Model settings
+model:
+  # Retriever model (options: contriever, bge, e5, gte)
+  retriever_name: contriever
+  query_encoder: facebook/contriever
+  passage_encoder: facebook/contriever
+  embedding_dim: 768
+  
+  # Generator model
+  generator_name: Qwen/Qwen2.5-7B-Instruct
+  max_new_tokens: 64
+  temperature: 0.1
+
+# Training settings
+training:
+  # Learning rate: FlowRAG=5e-3, Baselines=1e-5
+  learning_rate: 5e-3
+  batch_size: 1
+  max_steps: 5000
+  warmup_ratio: 0.1  # warmup_steps = max_steps * warmup_ratio
+  eval_interval: 500
+  
+  # FlowRAG prompt-tuning parameters (paper settings)
+  prompt_len: 150
+  prompt_layer: 7  # Insert prompts into encoder layers 1-7
+  use_ilf: true   # Inner Layer Fusion
+  use_cef: true   # Cross Embedder Fusion
+  use_ggf: false  # Generator-Guided Fusion
+  cef_temperature: 0.1  # KL-divergence temperature
+
+# Retrieval settings
+retrieval:
+  top_k: 5
+  index_type: FLAT  # FLAT or HNSW
+  use_faiss: true
+  chunk_size: 128
+  chunk_overlap: 0
+
+# Data settings
+data:
+  datasets:
+    - nq
+    - covidqa
+    - convqa
+    - newnewsqa
+  data_dir: ./cl_datasets
+  output_dir: ./output
+
+# Runtime settings
+gpu: 0
+seed: 42

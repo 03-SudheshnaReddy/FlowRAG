@@ -1,0 +1,13 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Bug Report"
+    url: "/intellistream/FlowRAG/issues/new?template=bug_report.md"
+    about: "Report a bug or unexpected behavior in FlowRAG"
+
+  - name: "Feature Request"
+    url: "/intellistream/FlowRAG/issues/new?template=feature_request.md"
+    about: "Suggest a new feature or improvement for FlowRAG"
+
+  - name: "Performance Issue"
+    url: "/intellistream/FlowRAG/issues/new?template=performance_issue.md"
+    about: "Report a performance bottleneck or inefficiency in FlowRAG"

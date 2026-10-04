@@ -1,0 +1,95 @@
+# ===========================
+# IDE and Editor
+# ===========================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyo
+.mypy_cache/
+.ruff_cache/
+
+# ===========================
+# Virtual Environments
+# ===========================
+venv/
+env/
+ENV/
+.env
+.venv/
+
+# ===========================
+# Distribution / Packaging
+# ===========================
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+MANIFEST
+
+# ===========================
+# Project Specific - Data
+# ===========================
+cl_datasets/
+embeddings_cache/
+faiss_db/
+
+# ===========================
+# Project Specific - Models
+# ===========================
+local_tokenizer/
+intfloat/
+nvidia/
+models/
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# ===========================
+# Project Specific - Output
+# ===========================
+output/
+logs/
+grid_search_evaluation/
+*.log
+
+# ===========================
+# Jupyter Notebook
+# ===========================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ===========================
+# Testing
+# ===========================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ===========================
+# OS Files
+# ===========================
+.DS_Store
+__MACOSX/
+Thumbs.db
+*.bak
+
+# ===========================
+# Backup Directories
+# ===========================
+src_backup/
+src_old/
+*.backup

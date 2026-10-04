@@ -1,0 +1,30 @@
+# FlowRAG Dependencies
+# ====================
+
+# Core Deep Learning
+torch>=2.0.0
+transformers>=4.40.0
+sentence-transformers>=3.0.0
+accelerate>=1.0.0
+
+# Retrieval & Vector Store
+faiss-cpu>=1.7.0  # Use faiss-gpu for GPU support
+
+# Data Processing
+datasets>=3.0.0
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.10.0
+
+# NLP & Evaluation
+nltk>=3.8.0
+
+# LLM Inference
+vllm>=0.4.0
+
+# Utilities
+tqdm>=4.65.0
+loguru>=0.7.0
+pyyaml>=6.0.0
+jinja2>=3.1.0
+huggingface-hub>=0.20.0

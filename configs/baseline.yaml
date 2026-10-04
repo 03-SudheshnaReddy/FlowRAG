@@ -1,0 +1,50 @@
+# Baseline Methods Configuration (Paper Settings)
+# =====================================================
+# Fine-tuning baselines: REPLUG, EMDR, FiD, Offline
+#
+# Paper settings for baselines:
+#   - Learning rate: 1e-5
+#   - Warm-up ratio: 0.1
+#   - Optimizer: AdamW
+#   - Top-K: 5 documents per query
+#   - Samples per task: 1,000 QA pairs
+
+model:
+  retriever_name: contriever
+  query_encoder: facebook/contriever
+  passage_encoder: facebook/contriever
+  embedding_dim: 768
+  
+  generator_name: Qwen/Qwen2.5-7B-Instruct
+  max_new_tokens: 64
+  temperature: 0.1
+
+training:
+  learning_rate: 1e-5       # Paper: 1e-5 for baselines
+  warmup_ratio: 0.1         # Paper: warm-up ratio 0.1
+  batch_size: 1
+  max_steps: 5000
+  eval_interval: 500
+  samples_per_task: 1000    # Paper: 1,000 QA pairs per dataset
+  
+  # Continual learning method (change as needed)
+  # Options: replug, emdr, fid, offline
+  cl_method: replug
+
+retrieval:
+  top_k: 5                  # Paper: top-5 documents per query
+  index_type: FLAT
+  use_faiss: true
+  faiss_db_path: ./faiss_db
+
+data:
+  datasets:
+    - nq
+    - covidqa
+    - convqa
+    - newnewsqa
+  data_dir: ./cl_datasets
+  output_dir: ./output/baseline
+
+gpu: 0
+seed: 42

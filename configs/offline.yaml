@@ -1,0 +1,37 @@
+# FlowRAG Configuration for Offline Evaluation
+# =============================================
+# Use this config for baseline evaluation without continual learning
+
+model:
+  retriever_name: e5
+  query_encoder: intfloat/e5-large-v2
+  passage_encoder: intfloat/e5-large-v2
+  embedding_dim: 1024
+  
+  generator_name: Qwen/Qwen2.5-7B-Instruct
+  max_new_tokens: 64
+  temperature: 0.1
+
+training:
+  # Offline mode - no training
+  learning_rate: 0
+  batch_size: 1
+  max_steps: 0
+
+retrieval:
+  top_k: 5
+  index_type: FLAT
+  use_faiss: true
+  use_separate_index: true  # Each dataset uses its own knowledge base
+
+data:
+  datasets:
+    - covidqa
+    - newnewsqa
+    - convqa
+    - nq
+  data_dir: ./cl_datasets
+  output_dir: ./output/offline
+
+gpu: 0
+seed: 42

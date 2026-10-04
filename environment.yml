@@ -1,0 +1,48 @@
+name: flowrag
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Python version
+  - python=3.11
+  
+  # PyTorch with CUDA support
+  - pytorch>=2.0.0
+  - pytorch-cuda=12.1
+  - torchaudio
+  - torchvision
+  
+  # Faiss GPU for efficient similarity search
+  - faiss-gpu
+  
+  # Basic utilities
+  - numpy>=1.24
+  - scipy>=1.10
+  - pyyaml
+  - pip
+  
+  # Pip dependencies
+  - pip:
+      # Core ML frameworks
+      - transformers>=4.40.0
+      - sentence-transformers>=3.0.0
+      - accelerate>=1.0.0
+      - huggingface-hub>=0.20.0
+      
+      # Data processing
+      - datasets>=3.0.0
+      - pandas>=2.0.0
+      
+      # NLP & Evaluation
+      - nltk>=3.8.0
+      
+      # Utilities
+      - tqdm>=4.65.0
+      - loguru>=0.7.0
+      - jinja2>=3.1.0
+      
+      # LLM Inference
+      - vllm>=0.4.0

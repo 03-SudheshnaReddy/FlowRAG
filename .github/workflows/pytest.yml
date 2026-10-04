@@ -1,0 +1,139 @@
+name: Pytest using Conda
+
+on: [push]
+
+defaults:
+  run:
+    shell: bash -el {0}
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # 清理空间
+    - name: Free Disk Space
+      run: |
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /opt/ghc
+        sudo rm -rf "/usr/local/share/boost"
+        df -h
+
+    - name: Setup Miniforge
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        miniforge-version: latest
+        use-mamba: true
+        python-version: "3.11"
+        activate-environment: flow
+        auto-activate-base: false
+
+    - name: List files for debugging
+      run: |
+        echo "Current directory:"
+        pwd
+        echo "Files in the current directory:"
+        ls -al
+        
+    # 分步安装依赖
+    - name: Install Base Dependencies
+      run: |
+        mamba install -y python=3.11 pip
+        mamba clean --all -y
+
+    - name: Install CUDA and PyTorch
+      run: |
+        mamba install -y \
+          pytorch=2.4.0 \
+          pytorch-cuda=12.1 \
+          torchaudio=2.4.0 \
+          torchvision=0.19.0 \
+          cuda-runtime=12.1.0 \
+          -c pytorch -c nvidia
+        mamba clean --all -y
+        conda clean --all -y
+        
+    - name: Install FAISS and Numeric Libraries
+      run: |
+        mamba install -y \
+          faiss-gpu=1.9.0 \
+          numpy \
+          mkl \
+          scipy \
+          -c pytorch -c nvidia
+        mamba clean --all -y
+
+    - name: Install ML Dependencies
+      run: |
+        pip install --no-cache-dir \
+          transformers==4.45.2 \
+          sentence-transformers==3.1.1 \
+          scikit-learn==1.5.2 \
+          bitsandbytes==0.44.1 \
+          xformers==0.0.27.post2
+    - name: Install Haystack Dependencies
+      run: |
+        # 先安装基础依赖
+        pip install --no-cache-dir \
+          grpcio==1.67.0 \
+          protobuf==5.28.2 \
+          urllib3==2.2.3
+
+        # 安装 Milvus 相关包
+        pip install --no-cache-dir \
+          pymilvus==2.4.8 \
+          milvus-lite==2.4.10
+        
+        # 安装 Haystack
+        pip install --no-cache-dir \
+          haystack-ai==2.6.1 \
+          milvus-haystack==0.0.11
+        mamba clean --all -y
+    - name: Install VLLM and Accelerate
+      run: |
+        pip install --no-cache-dir \
+          vllm==0.6.3.post1 \
+          accelerate==1.0.1 \
+          einops==0.8.0
+
+    - name: Install Utility Libraries
+      run: |
+        pip install --no-cache-dir \
+          pandas==2.2.3 \
+          ray==2.37.0 \
+          pyarrow==17.0.0 \
+          nltk==3.9.1 \
+          tqdm==4.66.5 \
+          pydantic==2.9.2 \
+          loguru==0.7.2
+          
+    - name: Install Evaluation Dependencies
+      run: |
+        # 安装 rouge-score 和相关依赖
+        pip install --no-cache-dir \
+          rouge-score==0.1.2 \
+          nltk==3.9.1 \
+          evaluate==0.4.3 \
+          datasets==3.0.1
+        
+        # 验证安装
+        python -c "import nltk; nltk.download('wordnet')"
+        python -c "import rouge_score; print('rouge_score imported successfully')"
+
+    # 安装pytest
+    - name: Install Pytest
+      run: |
+        mamba install -y pytest
+        mamba clean --all -y
+
+    # 运行测试
+    - name: Test with pytest
+      run: |
+        python -c "import torch; print('PyTorch version:', torch.__version__)"
+        python -c "import transformers; print('Transformers version:', transformers.__version__)"
+        pytest -v tests/ 
+
