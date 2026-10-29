@@ -46,7 +46,8 @@ class Evaluator:
             self._generator = create_generator(
                 model_name=self.model_name,
                 max_new_tokens=self.max_new_tokens,
-                use_vllm=True
+                use_vllm=False,
+                load_in_4bit=True
             )
             self._generator.load()
         return self._generator
